@@ -12,6 +12,7 @@ class Account(models.Model):
     name = models.CharField(max_length=200, blank=False, verbose_name='Name')
     sms_provider_title = models.ForeignKey(SMSProviderTitle, blank=False, null=True, on_delete=models.SET_NULL, verbose_name='SMS provider title')
     username = models.CharField(max_length=500, blank=False, verbose_name='Username')
+    merchant_code = models.PositiveIntegerField(unique=True, blank=False, null=True)
     api_keys = models.ManyToManyField('APIKey', verbose_name='API keys')
 
     class Meta:
