@@ -40,7 +40,6 @@ def send_sms(request):
                 msisdn=phone_number
             )
 
-            
             # MOBIS SMS
 
             xml_str = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -53,7 +52,6 @@ def send_sms(request):
                         <scheduled>now</scheduled>
                         <isbulk>false</isbulk>
                         <controlid>{}</controlid>
-                        <unicode>true</unicode>
                     </head>
                     <body>
                         <msisdn>{}</msisdn>
