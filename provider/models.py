@@ -18,33 +18,6 @@ class MobisSettings(SingletonModel):
         return 'Mobis settings'
 
 
-
-
-class MobisSMSControlid(models.Model):
-    control_id = models.CharField(max_length=120, blank=True, null=True)
-
-    def __str__(self):
-        return str(self.control_id)
-
-    def save(self, *args, **kwargs):
-        
-        merchant_code = str(kwargs.pop('code', 1234))
-
-        if self.control_id is None or self.control_id == '':
-            self.control_id = merchant_code + str(randint(10000000000000000000, 100000000000000000000))
-
-        unique_control_id = self.control_id
-
-        while MobisSMSControlid.objects.filter(control_id=unique_control_id).exists():
-            unique_control_id = merchant_code + str(randint(10000000000000000000, 100000000000000000000))
-
-        self.control_id = unique_control_id
-
-        return super(MobisSMSControlid, self).save(*args, **kwargs)
-
-
-
-
 class SMSProviderTitle(models.Model):
     title = models.CharField(max_length=200, blank=False, verbose_name='Title')
 
@@ -59,9 +32,27 @@ class SMSProviderTitle(models.Model):
 
 
 class SMS(models.Model):
+    STATUS_CHOICES = [
+        ('0', 'checking'),
+        ('1', 'queued'),
+        ('2', 'delivered'),
+        ('3', 'failed'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, null=True, blank=True, verbose_name='Status')
     control_id = models.CharField(max_length=120, blank=True, null=True)
     account = models.ForeignKey('accounts.Account', blank=False, null=True, on_delete=models.SET_NULL)
     api_key = models.ForeignKey('accounts.APIKey', blank=False, on_delete=models.PROTECT)
-    msisdn = models.CharField(max_length=120, blank=True, null=True)
+    msisdn = models.TextField(max_length=120, blank=True, null=True)
+    task_id = models.CharField(max_length=120, blank=True, null=True)
     is_bulk = models.BooleanField(default=False)
+
+
+    class Meta:
+        verbose_name = 'SMS'
+        verbose_name_plural = 'SMS'
+
+    # def __str__(self):
+    #     return self.account.username
+    
+
 

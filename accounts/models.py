@@ -1,4 +1,3 @@
-
 from django.db import models
 import uuid
 import base64
@@ -12,8 +11,6 @@ class Account(models.Model):
     name = models.CharField(max_length=200, blank=False, verbose_name='Name')
     sms_provider_title = models.ForeignKey(SMSProviderTitle, blank=False, null=True, on_delete=models.SET_NULL, verbose_name='SMS provider title')
     username = models.CharField(max_length=500, blank=False, verbose_name='Username')
-    merchant_code = models.PositiveIntegerField(unique=True, blank=False, null=True)
-    api_keys = models.ManyToManyField('APIKey', verbose_name='API keys')
 
     class Meta:
         verbose_name = 'Account'
@@ -26,6 +23,7 @@ class Account(models.Model):
 
 
 class APIKey(models.Model):
+    account = models.ForeignKey('Account', blank=False, null=True, related_name="apikey", on_delete=models.SET_NULL, verbose_name='Account')
     public_key = models.CharField(max_length=500, blank=True, verbose_name='Public key')
     private_key = models.CharField(max_length=500, blank=True, verbose_name='Private key')
     is_active = models.BooleanField(default=True)
@@ -36,6 +34,10 @@ class APIKey(models.Model):
     
     def __str__(self):
         return self.public_key
+
+    def __init__(self, *args, **kwargs):
+        super(APIKey, self).__init__(*args, **kwargs)
+        self.cache_is_active = self.is_active
     
 
     def save(self, *args, **kwargs):

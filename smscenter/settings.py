@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import environ
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -95,14 +100,15 @@ if DEBUG:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': env('DATABASE_NAME'),
-            'USER': env('DATABASE_USER'),
-            'PASSWORD': env('DATABASE_PASS'),
-            'HOST': 'smscenterdb',
-            'PORT': '5432',
-        }
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DATABASE_NAME'),          # Get database name from environment variable
+            'USER': os.getenv('DATABASE_USER'),          # Get database username from environment variable
+            'PASSWORD': os.getenv('DATABASE_PASS'),  # Get database password from environment variable
+            'HOST': 'smscenterdb',                           # Docker Compose service name of your PostgreSQL container
+            'PORT': '5432',                         # PostgreSQL default port
     }
+}
+    
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -133,6 +139,12 @@ TIME_ZONE = 'Asia/Baku'
 USE_I18N = True
 
 USE_TZ = False
+
+
+# Celery Configuration Options
+CELERY_TIMEZONE = "Australia/Tasmania"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/

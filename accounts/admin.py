@@ -3,7 +3,7 @@ from django.contrib import admin
 from . models import Account, APIKey
 
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ['name', 'sms_provider_title', 'username', 'merchant_code']
+    list_display = ['name', 'sms_provider_title', 'username']
     list_filter = ['sms_provider_title']
 
 class APIKeyAdmin(admin.ModelAdmin):
