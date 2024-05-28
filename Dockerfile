@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir -r requirements.txt \
 COPY . /smscenter
 
 # Expose port 8002 to the outside world
-EXPOSE 8000
+EXPOSE 8010
 
 # Command to run the application
-CMD ["gunicorn", "--bind", "127.0.0.1:8000", "smscenter.wsgi:application"]
+CMD ["gunicorn", "--bind", "127.0.0.1:8010", "smscenter.wsgi:application"]

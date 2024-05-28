@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # apps
     'accounts',
     'provider',
@@ -104,8 +103,8 @@ else:
             'NAME': os.getenv('DATABASE_NAME'),          # Get database name from environment variable
             'USER': os.getenv('DATABASE_USER'),          # Get database username from environment variable
             'PASSWORD': os.getenv('DATABASE_PASS'),  # Get database password from environment variable
-            'HOST': 'smscenterdb',                           # Docker Compose service name of your PostgreSQL container
-            'PORT': '5432',                         # PostgreSQL default port
+            'HOST': os.getenv('HOST'),                           # Docker Compose service name of your PostgreSQL container
+            'PORT': os.getenv('PORT'),                         # PostgreSQL default port
     }
 }
     
