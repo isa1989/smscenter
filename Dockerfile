@@ -1,5 +1,5 @@
 # Use a smaller base image
-FROM python:3.11-slim
+FROM python:3.11
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -27,4 +27,4 @@ COPY . /smscenter
 EXPOSE 8010
 
 # Command to run the application
-CMD ["gunicorn", "--bind", "127.0.0.1:8010", "smscenter.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8010", "smscenter.wsgi:application"]
